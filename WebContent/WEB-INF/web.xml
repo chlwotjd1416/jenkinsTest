@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+	version="3.1">
+
+	<!-- WEB-INF/web.xml : 어플리케이션의 설정파일 xml 파일을 수정하기 전에 서버를 멈추고, 변경후에 서버기동 필요 -->
+
+	<display-name>study</display-name>
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+		<welcome-file>index.htm</welcome-file>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
+	
+	<context-param>
+		<param-name>JDBC_URL</param-name>
+		<param-value>jdbc:oracle:thin:@127.0.0.1:1521:xe</param-value>
+	</context-param>
+	<context-param>
+		<param-name>JDBC_USER</param-name>
+		<param-value>java</param-value>
+	</context-param>
+	<context-param>
+		<param-name>JDBC_PW</param-name>
+		<param-value>oracle</param-value>
+	</context-param>
+
+	<!-- 사용자가 만든 서블릿 등록 -->
+	<servlet>
+		<servlet-name>dan</servlet-name>
+		<servlet-class>com.study.servlet.SevenDan</servlet-class>
+	</servlet>
+
+	<!-- 사용자 요청과 등록 서블릿 매핑 -->
+	<!-- url-pattern 확장자 매핑 : *.min (자기 회사약어 *.nhn *.daum) 
+			경로 매핑 : /*, /admin/* 
+			기본 서블릿 매핑 : / 주의 : 경로매핑 + 확장자매핑은 안됨 : /admin/*.nhn 
+			완전 매핑 : /mypage/info.wow 	-->
+	<servlet-mapping>
+		<servlet-name>dan</servlet-name>
+		<url-pattern>/admin/*</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>sum</servlet-name>
+		<servlet-class>com.study.servlet.SumSurvlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>loadUser</servlet-name>
+		<servlet-class>com.study.servlet.LoadUserServlet</servlet-class>
+		<load-on-startup>100</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>sum</servlet-name>
+		<url-pattern>*.soo</url-pattern>
+	</servlet-mapping>
+	
+<!-- 	<error-page> -->
+<!-- 		<error-code>404</error-code> -->
+<!-- 		<location>/error/error404.jsp</location> -->
+<!-- 	</error-page>	 -->
+	
+<!-- 	<error-page> -->
+<!-- 		<error-code>500</error-code> -->
+<!-- 		<location>/error/error500.jsp</location> -->
+<!-- 	</error-page> -->
+
+	
+<!-- 	<error-page> -->
+<!-- 		<exception-type>java.nio.BufferOverflowException</exception-type> -->
+<!-- 		<location>/error/errorLimit.jsp</location> -->
+<!-- 	</error-page> -->
+
+	<jsp-config>
+		<jsp-property-group>
+			<url-pattern>/10/*</url-pattern>
+			<include-prelude>/WEB_INF/inc/common_var.jsp</include-prelude>
+			<include-coda>/WEB_INF/inc/common_log.jsp</include-coda>
+		</jsp-property-group>
+	</jsp-config>
+
+	<!-- 일반업무가 많은 기관인 경우 시간을 늘려주시고
+		 보안이 파리요한 업무인 경우 줄여주시면 됩니다.
+	 -->
+	<session-config>
+		<session-timeout>30</session-timeout>
+	</session-config>
+</web-app>
